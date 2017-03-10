@@ -1,7 +1,30 @@
 package main
 
 
-import("fmt"; "container/list")
+import(
+  "fmt"
+  "container/list"
+  "os"
+  "bufio"
+)
+
+
+// readLines reads a whole file into memory
+// and returns a slice of its lines.
+func readLines(path string) ([]string, error) {
+  file, err := os.Open(path)
+  if err != nil {
+    return nil, err
+  }
+  defer file.Close()
+
+  var lines []string
+  scanner := bufio.NewScanner(file)
+  for scanner.Scan() {
+    lines = append(lines, scanner.Text())
+  }
+  return lines, scanner.Err()
+}
 
 
 type Graph struct{
@@ -14,12 +37,12 @@ type Graph struct{
 * Constructor
 **/
 func (g Graph) new(n uint) Graph{
+//  lines := readLines("./data/graph.in");
   g.length = n;
   g.weight = make([][]uint, n, n);
   g.adj = make([]list.List, n);
   return g;
 }
-
 
 
 
@@ -45,6 +68,7 @@ func (g Graph) dist01(source uint, target uint) ([]uint, []uint) {
       break;
     }
 
+    //Possible with go routine
     for e := g.adj[node].Front(); e != nil; e = e.Next() {
       neighoor := e.Value.(uint);
       ell      := dist[node] + g.weight[node][neighoor];
@@ -66,7 +90,7 @@ func (g Graph) dist01(source uint, target uint) ([]uint, []uint) {
   }
 
 
-
+/*
   func (g Graph) Dijskstra(source uint, target uint) ([]uint, []uint) {
     n     :=  g.length;
     grey  := new(list.List);
@@ -78,9 +102,10 @@ func (g Graph) dist01(source uint, target uint) ([]uint, []uint) {
 
 
     return dist, pred;
-  }
+  }*/
 
 
   func main(){
+
     fmt.Println("ok")
   }
